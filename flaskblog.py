@@ -1,19 +1,46 @@
-from flask import Flask, escape, request, render_template
+from flask import Flask, escape, request, render_template, url_for
+from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'BADskdasdjalkdjlaksdlkask'
+
+posts = [
+	{
+		'author': 'John Bob',
+		'title': 'Blas adventures',
+		'content': 'Moby Dick',
+		'date_posted': 'Aug 1'
+	},
+	{
+		'author': 'Eric Bob',
+		'title': 'Adventures of Bla',
+		'content': 'Ricky Bobby',
+		'date_posted': 'Dec 31'
+	}
+]
+
+
 
 @app.route('/')
 
 @app.route('/home')
 def home():
-    name = request.args.get("name", "World")
-    return render_template
-
+    return render_template('home.html', posts=posts)
 
 @app.route('/about')
 def about():
-    name = request.args.get("name", "World")
-    return f'<h1>About, {escape(name)}!</h1>'
+    return render_template('about.html', title='About')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+	form = RegistrationForm()
+	return render_template('register.html', title='Register', form=form)
+
+@app.route('/login')
+def login():
+	form = LoginForm()
+	return render_template('login.html', title='Login', form=form)
 
 
 
